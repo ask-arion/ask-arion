@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useNavigate, Link } from 'react-router-dom';
 import { auth } from '../firebaseConfig';
-import logo from '../assets/askarion-logo-silver.png';
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
+  const provider = new GoogleAuthProvider();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -16,45 +17,33 @@ export default function Login() {
     if (res) navigate('/chat');
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      await signInWithPopup(auth, provider);
+      navigate('/chat');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-100 via-white to-indigo-300 animate-gradient-slow z-0" />
-      <div className="relative z-10 bg-white/80 backdrop-blur-xl shadow-2xl rounded-3xl max-w-md w-full p-10 space-y-6 border border-gray-200">
-        <div className="flex flex-col items-center space-y-4">
-          <img
-            src={logo}
-            alt="Ask Arion"
-            className="w-32 object-contain transition-all duration-1000 ease-in-out hover:drop-shadow-glow"
-          />
-          <h1 className="text-3xl font-semibold text-gray-800 tracking-wide text-center">Ready when you are.</h1>
-          <p className="text-gray-500 text-sm text-center">Log in to continue.</p>
-        </div>
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="w-full max-w-md p-8 bg-white shadow rounded-xl">
+        <h2 className="text-2xl font-bold mb-4 text-center">Login to Arion</h2>
         <form onSubmit={handleLogin} className="space-y-4">
-          <input
-            type="email"
-            placeholder="Email"
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-white/90 backdrop-blur-sm"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-white/90 backdrop-blur-sm"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {error && <p className="text-red-600">{error.message}</p>}
-          <button
-            type="submit"
-            className="w-full bg-indigo-600 text-white py-3 rounded-xl font-medium hover:bg-indigo-700 transition-all shadow hover:shadow-xl"
-          >
-            {loading ? "Logging in..." : "Login"}
-          </button>
+          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full p-2 border rounded" />
+          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full p-2 border rounded" />
+          {error && <p className="text-red-500">{error.message}</p>}
+          <button type="submit" className="w-full bg-indigo-600 text-white p-2 rounded">{loading ? 'Logging in...' : 'Login'}</button>
         </form>
-        <p className="text-sm text-center text-gray-500">
-          Don't have an account? <Link to="/signup" className="text-indigo-600 hover:underline">Sign up</Link>
-        </p>
+        <button
+          type="button"
+          onClick={handleGoogleLogin}
+          className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 mt-4"
+        >
+          Sign in with Google
+        </button>
+        <p className="text-center mt-4">Don't have an account? <Link to="/signup" className="text-indigo-600">Sign up</Link></p>
       </div>
     </div>
   );
