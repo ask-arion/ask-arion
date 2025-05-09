@@ -36,10 +36,13 @@ export default function ChatShell() {
             {messages.map((msg, idx) => (
               <div
                 key={idx}
-                className={\`flex \${msg.type === 'user' ? 'justify-end' : 'justify-start'}\`}
+                className={msg.type === 'user' ? 'flex justify-end' : 'flex justify-start'}
               >
-                <div className={\`max-w-xl px-4 py-3 rounded-2xl whitespace-pre-wrap shadow
-                  \${msg.type === 'user' ? 'bg-indigo-100 text-indigo-900' : 'bg-white text-gray-800'}\`}>
+                <div className={
+                  msg.type === 'user'
+                    ? 'max-w-xl px-4 py-3 rounded-2xl whitespace-pre-wrap shadow bg-indigo-100 text-indigo-900'
+                    : 'max-w-xl px-4 py-3 rounded-2xl whitespace-pre-wrap shadow bg-white text-gray-800'
+                }>
                   {msg.text}
                 </div>
               </div>
@@ -87,8 +90,11 @@ export default function ChatShell() {
           <button
             key={item}
             onClick={() => setSection(item)}
-            className={\`block w-full text-left px-4 py-2 rounded-lg font-medium transition 
-              \${section === item ? 'bg-indigo-100 text-indigo-800' : 'text-gray-700 hover:bg-gray-100'}\`}
+            className={
+              section === item
+                ? 'block w-full text-left px-4 py-2 rounded-lg font-medium bg-indigo-100 text-indigo-800'
+                : 'block w-full text-left px-4 py-2 rounded-lg font-medium text-gray-700 hover:bg-gray-100'
+            }
           >
             {item}
           </button>
@@ -98,7 +104,9 @@ export default function ChatShell() {
       <div className="flex-1 flex flex-col">
         <div className="w-full px-6 py-4 border-b bg-white flex justify-between items-center">
           <h2 className="text-lg font-medium text-gray-700">Arion</h2>
-          <div className="text-sm text-gray-500">Signed in as <span className="font-semibold">{user?.email}</span></div>
+          <div className="text-sm text-gray-500">
+            Signed in as <span className="font-semibold">{user?.email}</span>
+          </div>
         </div>
 
         {renderMainView()}
