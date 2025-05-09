@@ -1,9 +1,12 @@
-
 import React, { useState, useRef, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import logo from "./assets/askarion-logo.png";
 import { getArionResponse } from "./arionBrain";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import PrivateRoute from "./components/PrivateRoute";
 
-export default function ArionApp() {
+function ArionApp() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
@@ -109,5 +112,24 @@ export default function ArionApp() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route
+          path="/chat"
+          element={
+            <PrivateRoute>
+              <ArionApp />
+            </PrivateRoute>
+          }
+        />
+      </Routes>
+    </Router>
   );
 }
