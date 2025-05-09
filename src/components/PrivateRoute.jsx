@@ -1,7 +1,12 @@
-import { Navigate } from "react-router-dom";
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../firebaseConfig';
 
 export default function PrivateRoute({ children }) {
-  const isAuthenticated = localStorage.getItem("arion-user");
+  const [user, loading] = useAuthState(auth);
 
-  return isAuthenticated ? children : <Navigate to="/" />;
+  if (loading) return <div>Loading...</div>;
+
+  return user ? children : <Navigate to="/" />;
 }

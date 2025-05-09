@@ -1,19 +1,20 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import logo from '../assets/askarion-logo-silver.png'
+import React, { useState } from 'react';
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useNavigate, Link } from 'react-router-dom';
+import { auth } from '../firebaseConfig';
+import logo from '../assets/askarion-logo-silver.png';
 
 export default function Login() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const navigate = useNavigate()
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
 
-  const handleLogin = (e) => {
-    e.preventDefault()
-    if (email && password) {
-      localStorage.setItem('arion-user', JSON.stringify({ email }))
-      navigate('/chat')
-    }
-  }
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const res = await signInWithEmailAndPassword(email, password);
+    if (res) navigate('/chat');
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
@@ -43,32 +44,18 @@ export default function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          {error && <p className="text-red-600">{error.message}</p>}
           <button
             type="submit"
             className="w-full bg-indigo-600 text-white py-3 rounded-xl font-medium hover:bg-indigo-700 transition-all shadow hover:shadow-xl"
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
         <p className="text-sm text-center text-gray-500">
-          Don't have an account? <a href="/signup" className="text-indigo-600 hover:underline">Sign up</a>
+          Don't have an account? <Link to="/signup" className="text-indigo-600 hover:underline">Sign up</Link>
         </p>
       </div>
-
-      <style jsx="true">{`
-        @keyframes gradient-slow {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        .animate-gradient-slow {
-          background-size: 400% 400%;
-          animation: gradient-slow 20s ease infinite;
-        }
-        .hover\:drop-shadow-glow:hover {
-          filter: drop-shadow(0 0 6px rgba(99, 102, 241, 0.6));
-        }
-      `}</style>
     </div>
-  )
+  );
 }
