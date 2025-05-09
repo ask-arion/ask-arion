@@ -20,8 +20,8 @@ export default function Login() {
       <div className="bg-white shadow-xl rounded-2xl max-w-md w-full p-8 sm:p-10 space-y-6 border border-gray-200">
         <div className="flex flex-col items-center space-y-4">
           <img src={logo} alt="Ask Arion" className="w-32 object-contain" />
-          <h1 className="text-2xl sm:text-3xl font-semibold text-gray-800 text-center">Welcome back to Arion</h1>
-          <p className="text-gray-500 text-sm text-center">Login to continue your journey</p>
+          <h1 className="text-2xl sm:text-3xl font-semibold text-gray-800 text-center">Ready when you are.</h1>
+          <p className="text-gray-500 text-sm text-center">Log in to continue.</p>
         </div>
         <form onSubmit={handleLogin} className="space-y-4">
           <input
