@@ -81,7 +81,6 @@ export default function ChatShell() {
 
   return (
     <div className="flex min-h-screen">
-      {/* Sidebar */}
       <div className="w-56 bg-white border-r shadow-sm p-6 space-y-6">
         <img src={logo} alt="Ask Arion" className="w-28 mb-8" />
         {['CIRCLE', 'DAILY', 'FORECAST', 'BLUEPRINT', 'ASK'].map((item) => (
@@ -96,15 +95,12 @@ export default function ChatShell() {
         ))}
       </div>
 
-      {/* Main content */}
       <div className="flex-1 flex flex-col">
-        {/* Top bar */}
         <div className="w-full px-6 py-4 border-b bg-white flex justify-between items-center">
           <h2 className="text-lg font-medium text-gray-700">Arion</h2>
           <div className="text-sm text-gray-500">Signed in as <span className="font-semibold">{user?.email}</span></div>
         </div>
 
-        {/* Section content */}
         {renderMainView()}
       </div>
     </div>
